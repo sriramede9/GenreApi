@@ -36,4 +36,30 @@ app.post("/api/users", (req, res) => {
   res.send({ id: idgenerated, type: btype.type });
 });
 
+app.put("/api/users/:id", (req, res) => {
+  //find by id;
+  const genre = genres.find(c => c.id === parseInt(req.params.id));
+
+  //update type using id;
+
+  genre.type = req.body.type;
+
+  res.send(genre);
+});
+
+//delete by id
+
+app.delete("/api/users/:id", (req, res) => {
+  //get by id
+  const genre = genres.find(c => c.id === parseInt(req.params.id));
+
+  //remove
+
+  const genreId = genres.findIndex(genre);
+
+  genres.splice(genreId, 1);
+
+  res.send(genre);
+});
+
 app.listen(3300, () => "started at 3300");
