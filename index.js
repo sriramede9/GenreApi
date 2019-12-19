@@ -22,6 +22,9 @@ app.use(logger);
 //app.use(morgan("tiny")); //will log the requests
 //one more middleware
 
+//using static folder
+app.use(express.static("temp"));
+
 app.use((req, res, next) => {
   console.log("I am Authenticating");
 
@@ -93,6 +96,12 @@ app.put("/api/genres/:id", (req, res) => {
     res.status(400).send("The requested genre is not available");
   }
 
+  const validatedGenre = validate(btype);
+
+  if (validatedGenre.error) {
+    return res.status(400).send(result.error.details[0].message);
+  }
+
   //update type using id;
 
   genre.type = req.body.type;
@@ -106,10 +115,19 @@ app.delete("/api/users/:id", (req, res) => {
   //get by id
   const genre = genres.find(c => c.id === parseInt(req.params.id));
 
-  //validate
+  //verify
   if (!genre) {
     res.status(400).send("The requested genre is not available");
   }
+
+  //validate
+
+  const validatedGenre = validate(btype);
+
+  if (validatedGenre.error) {
+    return res.status(400).send(result.error.details[0].message);
+  }
+
   //remove
 
   const genreId = genres.findIndex(genre);
