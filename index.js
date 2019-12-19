@@ -29,19 +29,11 @@ app.use(logger);
 //using static folder
 app.use(express.static("temp"));
 
-app.use((req, res, next) => {
-  console.log("I am Authenticating");
-
-  //if I want to restrict only use morgan in dev mode
-
-  if (app.get("env") === "development") {
-    app.use(morgan("tiny"));
-    appDebug("this is from app guy");
-    dbDebug("this is from db guy");
-  }
-
-  next();
-});
+if (app.get("env") === "development") {
+  app.use(morgan("tiny"));
+  appDebug("this is from app guy");
+  dbDebug("this is from db guy");
+}
 
 app.use("/api/genres", genres);
 
