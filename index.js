@@ -20,6 +20,7 @@ const dbDebug = require("debug")("app:dbLogging");
 //getting genre route
 
 const genres = require("./Genres/genres");
+const customers = require("./Genres/customers");
 
 //middleware
 
@@ -42,5 +43,6 @@ mongoose
   .catch(err => console.log("error couldn't connect to mongodb.." + err));
 
 app.use("/api/genres", genres);
+app.use("/api/customers", customers);
 
 app.listen(3300, () => "started at 3300");

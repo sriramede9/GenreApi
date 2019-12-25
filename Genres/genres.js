@@ -3,18 +3,7 @@ var router = express.Router();
 const Joi = require("joi");
 //integrating with data base
 
-const mongoose = require("mongoose");
-
-const genreSchema = new mongoose.Schema({
-  type: {
-    type: String,
-    required: true,
-    minlength: 3,
-    maxlength: 255
-  }
-});
-
-const Genre = mongoose.model("Genre", genreSchema);
+const { Genre, validate } = require("../validation/genreValidation");
 
 //let's create some array as baby steps
 
@@ -62,15 +51,13 @@ router.get("/:id", async (req, res) => {
 });
 
 router.post("/", async (req, res) => {
-  // const btype = req.body;
+  const btype = req.body;
 
-  // const validatedGenre = validate(btype);
+  const validatedGenre = validate(btype);
 
-  // if (validatedGenre.error) {
-  //   return res
-  //     .status(400)
-  //     .send("type should be more than 3 chars and should consist in req body");
-  // }
+  if (validatedGenre.error) {
+    return res.status(400).send("validation failed check joi");
+  }
 
   //const idgenerated = genres.length + 1;
 
@@ -168,15 +155,5 @@ router.delete("/:id", async (req, res) => {
   }
   res.status(200).send(genre);
 });
-
-function validate(btype) {
-  const schema = {
-    type: Joi.string()
-      .min(3)
-      .required()
-  };
-  const validatedGenre = Joi.validate(btype.type, schema);
-  return validatedGenre;
-}
 
 module.exports = router;
