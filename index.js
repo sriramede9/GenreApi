@@ -1,5 +1,6 @@
 var express = require("express");
 var app = express();
+const mongoose = require("mongoose");
 
 app.use(express.json());
 
@@ -34,6 +35,11 @@ if (app.get("env") === "development") {
   appDebug("this is from app guy");
   dbDebug("this is from db guy");
 }
+
+mongoose
+  .connect("mongodb://localhost/Genres")
+  .then(() => console.log("db is connected!!"))
+  .catch(err => console.log("error couldn't connect to mongodb.." + err));
 
 app.use("/api/genres", genres);
 
