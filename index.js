@@ -21,6 +21,7 @@ const dbDebug = require("debug")("app:dbLogging");
 
 const genres = require("./Genres/genres");
 const customers = require("./Genres/customers");
+const movies = require("./Genres/movies");
 
 //middleware
 
@@ -44,5 +45,6 @@ mongoose
 
 app.use("/api/genres", genres);
 app.use("/api/customers", customers);
+app.use("/api/movies", movies);
 
 app.listen(3300, () => "started at 3300");

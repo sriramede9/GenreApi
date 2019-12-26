@@ -1,20 +1,26 @@
 const mongoose = require("mongoose");
 const Joi = require("joi");
+const { genreSchema } = require("./genreValidation");
 
-const genreSchema = new mongoose.Schema({
-  type: {
+//i want genreSchema as well
+
+const movieSchema = new mongoose.Schema({
+  title: {
     type: String,
     required: true,
     minlength: 3,
     maxlength: 255
-  }
+  },
+  genre: genreSchema,
+  numberInStock: Number,
+  dailyRentalRate: Number
 });
 
-const Genre = mongoose.model("Genre", genreSchema);
+const Movies = mongoose.model("Movie", movieSchema);
 
 function validate(btype) {
   const schema = {
-    type: Joi.string()
+    name: Joi.string()
       .min(3)
       .required()
   };
@@ -22,6 +28,5 @@ function validate(btype) {
   return validatedGenre;
 }
 
-module.exports.Genre = Genre;
+module.exports.Movies = Movies;
 module.exports.validate = validate;
-module.exports.genreSchema = genreSchema;
