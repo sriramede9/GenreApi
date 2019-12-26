@@ -5,16 +5,6 @@ const Joi = require("joi");
 
 const { Genre, validate } = require("../validation/genreValidation");
 
-//let's create some array as baby steps
-
-// const genres = [
-//   { id: 1, type: "action" },
-//   { id: 2, type: "historic" },
-//   { id: 3, type: "romance" }
-// ];
-
-//load all genres
-
 router.get("/", async (req, res) => {
   try {
     // const courses = await Course.find();
@@ -28,26 +18,13 @@ router.get("/", async (req, res) => {
 });
 
 router.get("/:id", async (req, res) => {
-  //const genre = genres.find(c => c.id === parseInt(req.params.id));
-
-  //send error
-
-  // if (!genre) {
-  //   res.status(400).send("The requested genre is not available");
-  // }
-
-  //console.log(genre);
   try {
-    // const courses = await Course.find();
-
     const genre = await Genre.findById(req.params.id);
     //added status
     res.status(200).send(genre);
   } catch (err) {
     return err.message;
   }
-
-  //res.send(genre);
 });
 
 router.post("/", async (req, res) => {
@@ -58,10 +35,6 @@ router.post("/", async (req, res) => {
   if (validatedGenre.error) {
     return res.status(400).send("validation failed check joi");
   }
-
-  //const idgenerated = genres.length + 1;
-
-  //genres.push({ name: validatedGenre });
 
   //validating and pushing to db!!
 
@@ -104,6 +77,14 @@ router.put("/:id", async (req, res) => {
     if (!genre) {
       res.status(400).send("The requested genre is not available");
     }
+
+    //joi validation
+    const validatedGenre = validate(req.params.body);
+
+    if (validatedGenre.error) {
+      return res.status(400).send(result.error.details[0].message);
+    }
+
     const updatedGenre = genre.set({ type: req.body.type });
     res.status(200).send(updatedGenre);
 

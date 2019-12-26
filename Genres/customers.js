@@ -2,11 +2,11 @@ var express = require("express");
 var router = express.Router();
 const Joi = require("joi");
 
-const { customer, validate } = require("../validation/customerValidation");
+const { Customer, validate } = require("../validation/customerValidation");
 
 router.get("/", async (req, res) => {
   try {
-    const customers = await customer.find().sort("name");
+    const customers = await Customer.find().sort("name");
     //added status
     res.status(200).send(customers);
   } catch (err) {
@@ -16,10 +16,7 @@ router.get("/", async (req, res) => {
 
 router.get("/:id", async (req, res) => {
   try {
-    console.log("yeah this is the id" + req.params.id);
-
-    const customer = await customer.findById(req.params.id);
-
+    const customer = await Customer.findById(req.params.id);
     //added status
     res.status(200).send(customer);
   } catch (err) {
@@ -32,7 +29,7 @@ router.post("/", async (req, res) => {
   if (result.error)
     return res.status(400).send("validation failed check Joi!!");
 
-  const customerdb = new customer({
+  const customerdb = new Customer({
     isGold: req.body.isGold,
     name: req.body.name,
     phone: req.body.phone
@@ -58,7 +55,7 @@ router.put("/:id", async (req, res) => {
 
     //or we can use in one shot
 
-    const secondway = await customer.findByIdAndUpdate(
+    const secondway = await Customer.findByIdAndUpdate(
       req.params.id,
       { isGold: req.body.isGold, name: req.body.name, phone: req.body.phone },
       { new: true }
@@ -73,10 +70,10 @@ router.put("/:id", async (req, res) => {
 //delete by id
 
 router.delete("/:id", async (req, res) => {
-  const customer = await customer.findByIdAndRemove(req.params.id);
+  const customer = await Customer.findByIdAndRemove(req.params.id);
 
   if (!customer) {
-    res.status(400).send("The requested genre is not available");
+    res.status(400).send("The requested customer is not available");
   }
   res.status(200).send(customer);
 });
