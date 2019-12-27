@@ -26,8 +26,7 @@ function validateCustomer(customerbody) {
       .max(50)
       .required(),
     phone: Joi.number()
-      .min(12)
-      .max(12)
+      .min(10)
       .required(),
     isGold: Joi.boolean().required()
   };

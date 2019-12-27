@@ -26,6 +26,7 @@ router.get("/:id", async (req, res) => {
 
 router.post("/", async (req, res) => {
   const result = validate(req.body);
+  console.log(result);
   if (result.error)
     return res.status(400).send("validation failed check Joi!!");
 

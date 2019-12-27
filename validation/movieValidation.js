@@ -25,11 +25,18 @@ const Movies = mongoose.model("Movie", movieSchema);
 
 function validate(btype) {
   const schema = {
-    name: Joi.string()
+    title: Joi.string()
       .min(3)
+      .required(),
+    genreId: Joi.string().required(),
+    numberInStock: Joi.number()
+      .min(0)
+      .required(),
+    dailyRentalRate: Joi.number()
+      .min(0)
       .required()
   };
-  const validatedGenre = Joi.validate(btype.type, schema);
+  const validatedGenre = Joi.validate(btype, schema);
   return validatedGenre;
 }
 

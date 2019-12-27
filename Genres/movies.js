@@ -1,6 +1,8 @@
 var express = require("express");
 var router = express.Router();
 const Joi = require("joi");
+
+const { Genre } = require("../validation/genreValidation");
 //integrating with data base
 
 const { Movies, validate } = require("../validation/movieValidation");
@@ -28,19 +30,25 @@ router.get("/:id", async (req, res) => {
 });
 
 router.post("/", async (req, res) => {
-  const btype = req.body;
-
-  const validatedMovie = validate(btype);
+  const validatedMovie = validate(req.body);
 
   if (validatedMovie.error) {
     return res.status(400).send("validation failed check joi");
   }
+  //getting genre by genre id
+
+  const genre = await Genre.findById(req.body.genre);
+
+  if (!genre) res.status(400).send("No Genre found with such id");
 
   //validating and pushing to db!!
 
   const moviedb = new Movies({
     title: req.body.title,
-    genre: req.body.genre,
+    genre: {
+      _id: genre._id,
+      type: genre.type
+    },
     numberInStock: req.body.numberInStock,
     dailyRentalRate: req.body.dailyRentalRate
   });

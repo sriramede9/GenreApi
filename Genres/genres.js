@@ -28,13 +28,15 @@ router.get("/:id", async (req, res) => {
 });
 
 router.post("/", async (req, res) => {
-  const btype = req.body;
+  //const btype = req.body;
 
-  const validatedGenre = validate(btype);
+  const validatedGenre = validate(req.body);
 
-  if (validatedGenre.error) {
-    return res.status(400).send("validation failed check joi");
-  }
+  console.log(validatedGenre);
+
+  // if (validatedGenre.error) {
+  //   return res.status(400).send("validation failed check joi");
+  // }
 
   //validating and pushing to db!!
 
