@@ -9,7 +9,7 @@ router.get("/", async (req, res) => {
   try {
     // const courses = await Course.find();
 
-    const movies = await Movies.find().sort("name");
+    const movies = await Movies.find().sort("title");
     //added status
     res.status(200).send(movies);
   } catch (err) {
