@@ -22,7 +22,7 @@ const rentalSchema = new mongoose.Schema({
   },
 
   movie: {
-    type: mongoose.schema({
+    type: mongoose.Schema({
       title: {
         type: String,
         required: true,

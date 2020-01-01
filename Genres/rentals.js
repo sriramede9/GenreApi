@@ -1,7 +1,9 @@
 var express = require("express");
 var router = express.Router();
 const Joi = require("joi");
+
 const { Customer } = require("../validation/customerValidation");
+
 //integrating with data base
 const { Movies } = require("../validation/movieValidation");
 const { Rentals, validate } = require("../validation/rentalValidation");
@@ -24,20 +26,25 @@ router.post("/", async (req, res) => {
   if (validatedRental.error) {
     res.send("check Joi Validation");
   }
+  const customer = await Customer.findById(req.body.customerId);
 
-  const customer = await Customer.findbyId(req.body.customerId);
+  //5e058dd79cc593238c7f8ba0
 
   if (!customer) {
     res.send("no such customer exits with such id");
   }
 
-  const movie = Movies.findbyId(req.body.movieId);
+  const movie = await Movies.findById(req.body.movieId);
 
   if (!movie) {
     res.send("no such customer exits with such id");
   }
 
-  if (movie.numberInStock === 0) return res.send("Movie not available");
+  console.log(movie);
+  //console.log(customer);
+
+  if (movie.numberInStock === 0)
+    return res.send("Movie not available in stock!!");
 
   let rental = new Rentals({
     customer: {
