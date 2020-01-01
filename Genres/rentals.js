@@ -2,6 +2,7 @@ var express = require("express");
 var router = express.Router();
 const Joi = require("joi");
 
+
 const { Customer } = require("../validation/customerValidation");
 
 //integrating with data base

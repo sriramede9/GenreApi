@@ -5,6 +5,7 @@ const mongoose = require("mongoose");
 app.use(express.json());
 
 const Joi = require("joi");
+Joi.objectId = require("joi-objectid")(Joi);
 
 const logger = require("./middleware/logger");
 
