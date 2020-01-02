@@ -43,3 +43,4 @@ function validate(btype) {
 
 module.exports.Movies = Movies;
 module.exports.validate = validate;
+ 
