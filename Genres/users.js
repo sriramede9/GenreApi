@@ -3,6 +3,8 @@ var router = express.Router();
 
 const _ = require("lodash");
 
+const bcrypt = require("bcryptjs");
+
 //integrating with data base
 
 const { User, validate } = require("../validation/userValidation");
@@ -24,6 +26,11 @@ router.post("/", async (req, res) => {
   const useredb = new User(_.pick(req.body, ["name", "email", "password"]));
 
   try {
+    const salt = await bcrypt.genSalt(10);
+
+    const hash = await bcrypt.hash(useredb.password, salt);
+
+    useredb.password = hash;
     const savedUser = await useredb.save();
 
     res.status(200).send(_.pick(savedUser, ["id", "name", "email"]));
