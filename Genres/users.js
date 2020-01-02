@@ -1,6 +1,8 @@
 var express = require("express");
 var router = express.Router();
 
+const _ = require("lodash");
+
 //integrating with data base
 
 const { User, validate } = require("../validation/userValidation");
@@ -19,15 +21,12 @@ router.post("/", async (req, res) => {
     res.status(400).send("email id is already registered");
   }
 
-  const useredb = new User({
-    name: req.body.name,
-    email: req.body.email,
-    password: req.body.password
-  });
+  const useredb = new User(_.pick(req.body, ["name", "email", "password"]));
 
   try {
     const savedUser = await useredb.save();
-    res.status(200).send(savedUser);
+
+    res.status(200).send(_.pick(savedUser, ["id", "name", "email"]));
   } catch (err) {
     console.log(err.message);
   }
