@@ -1,7 +1,7 @@
 var express = require("express");
 var router = express.Router();
 const Joi = require("joi");
-
+const jwt = require("jsonwebtoken");
 const _ = require("lodash");
 //encrypting and decrypting
 const bcrypt = require("bcryptjs");
@@ -39,12 +39,14 @@ router.post("/", async (req, res) => {
     }
 
     const userdetails = await User.findOne({
-      name: req.params.name,
-      password: req.params.password
+      email: req.body.email
     });
 
+    // console.log(userdetails);
+
     // console.log(_.pick(userdetails, ["email", "password"]));
-    res.status(200).send(true);
+    const token = jwt.sign({ _id: userdetails._id }, "jwtPrivateKey");
+    res.status(200).send(token);
   } catch (err) {
     console.log(err.message);
   }
