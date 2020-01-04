@@ -1,6 +1,7 @@
 var express = require("express");
 var router = express.Router();
-
+const jwt = require("jsonwebtoken");
+const config = require("config");
 const _ = require("lodash");
 
 const bcrypt = require("bcryptjs");
@@ -33,7 +34,15 @@ router.post("/", async (req, res) => {
     useredb.password = hash;
     const savedUser = await useredb.save();
 
-    res.status(200).send(_.pick(savedUser, ["id", "name", "email"]));
+    const token = jwt.sign(
+      { _id: savedUser._id, isAdmin: savedUser.isAdmin },
+      config.get("jwtPrivateKey")
+    );
+
+    res
+      .header("x-auth-token", token)
+      .status(200)
+      .send(_.pick(savedUser, ["id", "name", "email"]));
   } catch (err) {
     console.log(err.message);
   }

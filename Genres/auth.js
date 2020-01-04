@@ -47,7 +47,7 @@ router.post("/", async (req, res) => {
 
     // console.log(_.pick(userdetails, ["email", "password"]));
     const token = jwt.sign(
-      { _id: userdetails._id },
+      { _id: userdetails._id, isAdmin: userdetails.isAdmin },
       config.get("jwtPrivateKey")
     );
 

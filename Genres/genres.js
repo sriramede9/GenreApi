@@ -1,6 +1,11 @@
 var express = require("express");
 var router = express.Router();
 const Joi = require("joi");
+const auth = require("../middleware/auth");
+const admin = require("../middleware/admin");
+
+const authMiddleware = require("../middleware/auth");
+
 //integrating with data base
 
 const { Genre, validate } = require("../validation/genreValidation");
@@ -27,12 +32,12 @@ router.get("/:id", async (req, res) => {
   }
 });
 
-router.post("/", async (req, res) => {
+router.post("/", authMiddleware, async (req, res) => {
   //const btype = req.body;
 
   const validatedGenre = validate(req.body);
 
-  console.log(validatedGenre);
+  //console.log(validatedGenre);
 
   // if (validatedGenre.error) {
   //   return res.status(400).send("validation failed check joi");
@@ -102,7 +107,7 @@ router.put("/:id", async (req, res) => {
 
 //delete by id
 
-router.delete("/:id", async (req, res) => {
+router.delete("/:id", [auth, admin], async (req, res) => {
   //get by id
   // const genre = genres.find(c => c.id === parseInt(req.params.id));
 
