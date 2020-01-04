@@ -1,7 +1,7 @@
 var express = require("express");
 var app = express();
 const mongoose = require("mongoose");
-
+const config = require("config");
 app.use(express.json());
 
 const Joi = require("joi");
@@ -17,6 +17,11 @@ var morgan = require("morgan");
 
 const appDebug = require("debug")("app:generalLogging");
 const dbDebug = require("debug")("app:dbLogging");
+
+if (!config.get("jwtPrivateKey")) {
+  console.log("Fatal error config key is not set");
+  process.exit(1);
+}
 
 //getting genre route
 

@@ -5,6 +5,7 @@ const jwt = require("jsonwebtoken");
 const _ = require("lodash");
 //encrypting and decrypting
 const bcrypt = require("bcryptjs");
+const config = require("config");
 
 //integrating with data base
 
@@ -45,7 +46,11 @@ router.post("/", async (req, res) => {
     // console.log(userdetails);
 
     // console.log(_.pick(userdetails, ["email", "password"]));
-    const token = jwt.sign({ _id: userdetails._id }, "jwtPrivateKey");
+    const token = jwt.sign(
+      { _id: userdetails._id },
+      config.get("jwtPrivateKey")
+    );
+
     res.status(200).send(token);
   } catch (err) {
     console.log(err.message);
