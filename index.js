@@ -31,6 +31,7 @@ const movies = require("./Genres/movies");
 const rentals = require("./Genres/rentals");
 const users = require("./Genres/users");
 const auth = require("./Genres/auth");
+const error = require("./middleware/error");
 //middleware
 
 app.use(logger);
@@ -57,5 +58,7 @@ app.use("/api/movies", movies);
 app.use("/api/rentals", rentals);
 app.use("/api/users", users);
 app.use("/api/auth", auth);
+
+app.use(error);
 
 app.listen(3300, () => "started at 3300");

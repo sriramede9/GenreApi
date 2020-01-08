@@ -10,7 +10,7 @@ const authMiddleware = require("../middleware/auth");
 
 const { Genre, validate } = require("../validation/genreValidation");
 
-router.get("/", async (req, res) => {
+router.get("/", async (req, res, next) => {
   try {
     // const courses = await Course.find();
 
@@ -18,7 +18,8 @@ router.get("/", async (req, res) => {
     //added status
     res.status(200).send(genres);
   } catch (err) {
-    return err.message;
+    //console.log("Something wrong with mongod DB connections");
+    next(ex);
   }
 });
 
