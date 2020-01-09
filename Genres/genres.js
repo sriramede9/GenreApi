@@ -3,25 +3,21 @@ var router = express.Router();
 const Joi = require("joi");
 const auth = require("../middleware/auth");
 const admin = require("../middleware/admin");
-
+const asyncMiddleware = require("../middleware/async");
 const authMiddleware = require("../middleware/auth");
 
 //integrating with data base
 
 const { Genre, validate } = require("../validation/genreValidation");
 
-router.get("/", async (req, res, next) => {
-  try {
-    // const courses = await Course.find();
-
+router.get(
+  "/",
+  asyncMiddleware(async (req, res) => {
     const genres = await Genre.find().sort("type");
-    //added status
+
     res.status(200).send(genres);
-  } catch (err) {
-    //console.log("Something wrong with mongod DB connections");
-    next(ex);
-  }
-});
+  })
+);
 
 router.get("/:id", async (req, res) => {
   try {
